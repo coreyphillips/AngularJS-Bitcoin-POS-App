@@ -13,18 +13,18 @@ For Merchant use, navigate to the "config/data.json" file. There are two require
 ## Possible Use-Cases
 
 Bitcoin->Bitcoin Payments:
-The customer selects the "Pay with Bitcoin" option to pay the merchant directly in Bitcoin.
+- The customer selects the "Pay with Bitcoin" option to pay the merchant directly in Bitcoin.
 
 Altcoin->Bitcoin Payments:
-The customer selects the "Pay with Altcoin" option to pay the merchant in Bitcoin with any available altcoin via ShapeShift.org.
+- The customer selects the "Pay with Altcoin" option to pay the merchant in Bitcoin with any available altcoin via ShapeShift.org.
 
 Bitcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
-Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
-The customer selects the "Pay with Bitcoin" option to pay the merchant with Bitcoin to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
+- Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
+- The customer selects the "Pay with Bitcoin" option to pay the merchant with Bitcoin to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
 
 Altcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
-Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
-The customer selects the "Pay with Altcoin" option to pay the merchant with Bitcoin withh any available altcoin via ShapeShift.org to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
+- Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
+- The customer selects the "Pay with Altcoin" option to pay the merchant with Bitcoin withh any available altcoin via ShapeShift.org to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
 
 ## Future Improvements/Known Limitations
 
