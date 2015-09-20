@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="text-center col-lg-5 col-lg-offset-1">
+            <h3 class="page-header">Transactions for {{address}}</h3><br>
+
+            <form class="navbar-form" role="search">
+                <div class="form-group">
+                    <input ng-model="address" type="text" class="form-control" placeholder="{{txs.data.address}}">
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Quick Search <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="searchAddress(defaultAddress.address)">{{defaultAddress.name}}:
+                            {{defaultAddress.address}}</a></li>
+                        <li class="divider"></li>
+                        <li ng-repeat="address in data.addresses"><a href="" ng-click="searchAddress(address.address)">{{address.name}}:
+                            {{address.address}}</a></li>
+                    </ul>
+                </div>
+            </form>
+            <p>Total Number of Transactions: {{txs.nb_txs}}</p>
+
+            <p>Balance: {{balance}}</p>
+
+            <p>Total Amount Received: {{totalAmountReceived}}</p>
+        </div>
+        <div class="table-responsive text-center col-lg-5">
+            <br>
+            <img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=bitcoin:{{address}}' alt=''/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive text-center col-lg-10 col-lg-offset-1">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Date Time Received</th>
+                    <th>Confirmations</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="{{tx.confirmations>0?+'success':'warning'}}" data-ng-repeat="tx in txs.txs">
+                    <td>{{tx.tx}}</td>
+                    <td>{{tx.time_utc}}</td>
+                    <td>{{tx.confirmations}}</td>
+                    <td ng-init="sumAmount(tx.amount)">{{tx.amount}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

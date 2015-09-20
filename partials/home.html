@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="row placeholders">
+                <div class="placeholder" align="right">
+                    <h3>Total: {{ getTotal() | currency }}</h3>
+                    <div ng-show="items.length">
+                    <div class="tile-button button-medium" ng-click="checkoutModal()">
+                        <h4 id="checkout-text">Checkout</h4>
+                    </div><br>
+                        <div ng-click="removeAllItems()" class="tile-button button-small light-red">Remove all Items</div>
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="item in items">
+                <div class="col-lg-3 col-md-3 col-sm-3 tile item-list tile-small-list tile-light-green text-center" ng-click="deleteItem($index)">
+                    <br><h4>{{item.name}}</h4><br>
+                    <h4>{{item.price | currency}}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+            <div data-ng-repeat="item in data.items">
+                <div class="col-sm-3 col-md-3 thumbnail tile tile-medium-list tile-light-purple" ng-click="addItem(item.name, item.description, item.price)">
+                    <br>
+                    <h3>{{item.name | limitTo: 30}}</h3>
+                    {{item.description | limitTo: 40}}<br><br>
+                    <div ng-show="item.price"><h2>{{item.price | currency}}</h2></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

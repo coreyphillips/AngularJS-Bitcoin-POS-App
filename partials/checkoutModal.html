@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row">
+        <h3 class="page-header text-center">Review Order {{symbol}}</h3><br>
+        <div class="table-responsive text-center">
+            <table class="table table-striped table-hover">
+                <tr data-ng-repeat="item in items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td>Price: {{item.price | currency }}</td>
+                </tr>
+            </table>
+            <div ng-if="address.length>0 && transactionIsSuccess == false">
+                <img src='https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=bitcoin:{{address}}?amount={{exchangeRate | number:8}}' alt=''/><br>
+                <h3>Amount to Send: {{exchangeRate | number:8}}</h3>
+                <h3>Address: {{address}}</h3>
+            </div>
+        </div>
+        <h3 class="timer" ng-if="timer">{{timer | secondsToMinutes | date:'mm:ss'}}</h3>
+        <div ng-show="transactionIsSuccess" class="alert alert-success fade in">
+            <strong>Success!</strong> Your transaction has been received.
+        </div>
+        <div ng-show="shapeShiftError" class="alert alert-warning fade in">
+            <strong>Unable to connect to ShapeShift!</strong>Please try again.
+        </div>
+        <div class="modal-footer">
+            <h3>Total: {{ total = getTotal() | currency }}</h3>
+            <button class="btn btn-warning" type="button" ng-click="payWithBitcoin(getTotal())">Pay With Bitcoin</button>
+            <div class="btn-group">
+                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" ng-click="getAltcoins()">Pay With Altcoin<span class="caret"></span>
+                </button>
+                <ul id="altcoin-list" class="dropdown-menu" role="menu">
+                    <li ng-show="coin.status == 'available'" data-ng-repeat="coin in shapeShiftAltcoins">
+                        <a href="#" ng-click="payWithAltcoin(total, coin.symbol)"><img id="altcoin-image" src="{{coin.image}}">{{coin.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn btn-danger" type="button" ng-click="cancel('Transaction Cancelled')">Cancel</button>
+        </div>
+    </div>
+</div>

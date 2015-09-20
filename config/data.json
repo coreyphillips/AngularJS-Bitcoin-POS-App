@@ -1,0 +1,80 @@
+{
+  "items":[
+    {
+      "name":"Item 0",
+      "description":"Description 0"
+    },
+    {
+      "name":"Item 1",
+      "description":"Description 1",
+      "price": 1
+    },
+    {
+      "name":"Item 2",
+      "description":"Description 2",
+      "price": 2
+    },
+    {
+      "name":"Item 3",
+      "description":"Description 3",
+      "price": 3
+    },
+    {
+      "name":"Item 4",
+      "description":"Description 4",
+      "price": 4
+    },
+    {
+      "name":"Item 5",
+      "description":"Description 5",
+      "price": 5
+    },
+    {
+      "name":"Item 6",
+      "price": 6
+    },
+    {
+      "name":"Item 7",
+      "price": 7
+    },
+    {
+      "name":"Item 8",
+      "price": 8
+    },
+    {
+      "name":"Item 9",
+      "price": 9
+    },
+    {
+      "name":"Item 10",
+      "price": 10
+    }
+  ],
+  "defaultCoin":[{
+    "name":"Bitcoin",
+    "address":"1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy",
+    "symbol":"btc"
+  }],
+  "addresses":[
+    {
+      "name":"First Address",
+      "address":"194AJeZCav8TUFn5WBc8cELWwJQK6ViC8x",
+      "symbol":"btc"
+    },
+    {
+      "name":"Second Address",
+      "address":"194AJeZCav8TUFn5WBc8cELWwJQK6ViC8xs",
+      "symbol":"btc"
+    },
+    {
+      "name":"Third Address",
+      "address":"1KW8DKTgJzvgc4MaU5HUmHqT65mU8PmzqJ",
+      "symbol":"btc"
+    },
+    {
+      "name":"Fourth Address",
+      "address":"1APjoxbqRykt1JDYKoK68vYiFwQfJFb25Z",
+      "symbol":"btc"
+    }
+  ]
+}
