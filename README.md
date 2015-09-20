@@ -1,6 +1,6 @@
 ## Synopsis
 
-This is an AngularJS, Bitcoin POS App that accepts Bitcoin and most coins available on ShapeShift.org as payment. This project is still a work in progress and is currently meant for experimental and learning purposes only. Please use at your own risk.
+This is an AngularJS, Bitcoin POS App that accepts Bitcoin and most coins available on ShapeShift.io as payment. This project is still a work in progress and is currently meant for experimental and learning purposes only. Please use at your own risk.
 
 ## Motivation
 
@@ -16,7 +16,7 @@ Bitcoin->Bitcoin Payments:
 - The customer selects the "Pay with Bitcoin" option to pay the merchant directly in Bitcoin.
 
 Altcoin->Bitcoin Payments:
-- The customer selects the "Pay with Altcoin" option to pay the merchant in Bitcoin with any available altcoin via ShapeShift.org.
+- The customer selects the "Pay with Altcoin" option to pay the merchant in Bitcoin with any available altcoin via ShapeShift.io.
 
 Bitcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
 - Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
@@ -24,12 +24,12 @@ Bitcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
 
 Altcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
 - Note: https://support.coinbase.com/customer/portal/articles/2021569-what-is-instant-exchange-
-- The customer selects the "Pay with Altcoin" option to pay the merchant with Bitcoin withh any available altcoin via ShapeShift.org to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
+- The customer selects the "Pay with Altcoin" option to pay the merchant with Bitcoin withh any available altcoin via ShapeShift.io to the merchant's Instant Exchange Bitcoin Address from Coinbase. The payment is then immediately exchanged for USD.
 
 ## Future Improvements/Known Limitations
 
 - Allow merchants to accept altcoins to receive payments instead of just Bitcoin.
-- Create support for altcoins available on ShapeShift.org that require more than an address for a successful transaction (i.e. Monero).
+- Create support for altcoins available on ShapeShift.io that require more than an address for a successful transaction (i.e. Monero).
 - The #/search page currently uses "https://btc.blockr.io/api/v1/address/txs/'+ address" to get address transactions. Unfortunately, this api does not appear to list 0 confirmation transactions. Any suggestions on an api that also lists 0 confirmation transactions would be greatly appreciated.
 - $rootscope was not used throughout the app due to several suggestions that it be avoided. However, accessing parent scopes eventually become an issue. There are instances where $modalInstance is used to work around this, but it is less than ideal. This issue also seems to prevent the $scope.items array from being cleared after each transaction requiring the user to click "Remove All Items" instead. Any suggestions on how to best access parent scope would be greatly appreciated.
 
