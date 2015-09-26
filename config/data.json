@@ -7,17 +7,17 @@
     {
       "name":"Item 1",
       "description":"Description 1",
-      "price": 1
+      "price": ".05"
     },
     {
       "name":"Item 2",
       "description":"Description 2",
-      "price": 2
+      "price": ".20"
     },
     {
       "name":"Item 3",
       "description":"Description 3",
-      "price": 3
+      "price": "3"
     },
     {
       "name":"Item 4",

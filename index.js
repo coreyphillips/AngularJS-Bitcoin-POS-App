@@ -40,21 +40,40 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
 
     .factory('httpService', function($http, $q) {
         return {
-            getItems: function(){
-                return $http.get('config/items.json');
+            getJSON: function(){
+                return $http.get('config/data.json');
             },
+            /*
+             https://api.bitcoinaverage.com/ticker/global/USD
+             {"24h_avg": 236.44,"ask": 236.28,"bid": 235.99,"last": 236.33,"timestamp": "Sat, 26 Sep 2015 16:07:40 -0000","volume_btc": 46291.38,"volume_percent": 87.17}
+             */
             getExchangeRate:  function(){
                 return $http.get('https://api.bitcoinaverage.com/ticker/global/USD');
             },
+            /*
+             https://www.shapeshift.io/getcoins
+             {"BTC":{"name":"Bitcoin","symbol":"BTC","image":"https://shapeshift.io/images/coins/bitcoin.png","status":"available"},"VTC":{"name":"Vertcoin","symbol":"VTC","image":"https://shapeshift.io/images/coins/vertcoin.png","status":"unavailable"}}
+            */
             getAltcoinsFromShapeShift: function(){
                 return $http.get('https://www.shapeshift.io/getcoins');
             },
+            /*
+             https://blockchain.info/q/getreceivedbyaddress/1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy
+             23563823
+             */
             getAddressBalance: function(address){
                 return $http.get('https://blockchain.info/q/getreceivedbyaddress/' + address);
             },
+            /*
+             https://btc.blockr.io/api/v1/address/txs/194AJeZCav8TUFn5WBc8cELWwJQK6ViC8x
+             {"status":"success","data":{"address":"194AJeZCav8TUFn5WBc8cELWwJQK6ViC8x","limit_txs":200,"nb_txs":2,"nb_txs_displayed":2,"txs":[{"tx":"bb60c1fe73387d5a3dbfb09f1e8a5c15cb2e8301f178c46b655cae4bfc2d6c3d","time_utc":"2015-09-21T01:46:14Z","confirmations":836,"amount":-0.0002144,"amount_multisig":0}},"code":200,"message":""}
+             */
             listBitcoinTransactions: function(address){
                 return $http.get('https://btc.blockr.io/api/v1/address/txs/'+ address)
             },
+            /*
+             {"deposit":"LZYZ7Wu7gsx9UTs8mHa3DTzBKMT92sSNqG","depositType":"LTC","withdrawal":"1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy","withdrawalType":"BTC","public":null,"apiPubKey":"shapeshift"}
+             */
             getAltcoinDepositAddress: function(altcoin, address){
                 var data = ({
                     method: 'POST',
@@ -73,9 +92,21 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                 });
                 return $http(data);
             },
+            /*
+             https://www.shapeshift.io/marketinfo/ltc_btc
+             {"pair":"ltc_btc","rate":0.01215038,"minerFee":0.0001,"limit":353.97822857,"minimum":0.01628664}
+             */
             getAltcoinMarketInfo: function(altcoin){
                 return $http.get('https://www.shapeshift.io/marketinfo/'+altcoin+'_btc');
             },
+            /*
+             https://www.shapeshift.io/txStat/1B8eC6MvjhKXt2Hk9yKDMsBAvosZ1cg6wt
+             No deposit received:
+             {"status":"no_deposits","address":"1B8eC6MvjhKXt2Hk9yKDMsBAvosZ1cg6wt"}
+
+             Deposit received:
+             {"status":"received","address":"1B8eC6MvjhKXt2Hk9yKDMsBAvosZ1cg6wt","incomingCoin":0.01698658,"incomingType":"BTC"}
+             */
             getShapeShiftTransactionStats : function(withdrawalAddress){
                 return $http.get('https://shapeshift.io/txStat/'+withdrawalAddress);
             }
@@ -92,6 +123,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
  */
     .controller('PageCtrl', function ($scope, $http, $modal, $log, $timeout, httpService, getJSON) {
         $scope.data = getJSON;
+        $scope.name = $scope.data.defaultCoin[0].name;
         $scope.address = $scope.data.defaultCoin[0].address;
         $scope.symbol = $scope.data.defaultCoin[0].symbol;
         $scope.items = [];
@@ -115,7 +147,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                 if(!item.price){
                     item.price = 0;
                 }
-                total += item.price;
+                total += Math.round10(item.price, -2);
             });
             return total;
         };
@@ -127,6 +159,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                 controller: 'ModalInstanceCtrl'
             });
             modalInstance.items = $scope.items;
+            modalInstance.name = $scope.name;
             modalInstance.address = $scope.address;
             modalInstance.symbol = $scope.symbol;
         };
@@ -139,6 +172,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
         });
 
         $scope.items = $modalInstance.items;
+        $scope.name = $modalInstance.name;
         $scope.symbol = $modalInstance.symbol;
 
         $scope.cancel = function (status) {
@@ -153,7 +187,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                 if(!item.price){
                     item.price = 0;
                 }
-                total += item.price;
+                total += Math.round10(item.price, -2);
             });
             return total;
         };
@@ -177,17 +211,22 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
         };
 
         $scope.payWithAltcoin = function(total, altcoin) {
+            $scope.checkoutError = false;
             $scope.timer = 600;
             timer($scope.timer);
-            var getAltcoinMarketInfo = altcoin.toLowerCase();
-            httpService.getAltcoinMarketInfo(getAltcoinMarketInfo).then(function (result) {
+            httpService.getAltcoinMarketInfo(altcoin.toLowerCase()).then(function (result) {
                 $scope.altcoinRate = result.data.rate;
                 $scope.transactionIsActive = true;
 
                 var btcExchangeRate = Math.round10(total/$scope.rate, -8);
                 $scope.exchangeRate = Math.round10((btcExchangeRate/$scope.altcoinRate), -8);
 
-                getAltcoinDepositAddress(altcoin);
+                //Check that the current purchase is below ShapeShift's limit and above ShapeShift's minimum
+                if($scope.exchangeRate > result.data.limit || $scope.exchangeRate < result.data.minimum){
+                    checkoutError("According to ShapeShift's limits you must spend more than "+result.data.minimum+" "+ altcoin +" and less than "+ result.data.limit+" "+ altcoin);
+                } else {
+                    getAltcoinDepositAddress(altcoin);
+                }
             });
         };
 
@@ -217,11 +256,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             httpService.getAltcoinDepositAddress(altcoin, $modalInstance.address).then(function (result) {
                 if (result.data.error && $scope.transactionIsActive == true) {
                     if(i >= limit) {
-                        $scope.shapeShiftError = true;
-                        $timeout(function () {
-                        }, 3000).then(function () {
-                            $scope.cancel('Unable to fetch deposit address from ShapeShift.');
-                        });
+                        checkoutError('Unable to fetch deposit address from ShapeShift.');
                     } else {
                         i++;
                         getAltcoinDepositAddress();
@@ -237,7 +272,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             $scope.transactionIsSuccess = false;
             if($scope.transactionIsActive == true) {
                 httpService.getShapeShiftTransactionStats(withdrawalAddress).then(function (result) {
-                    if (result.data.status == "received") {
+                    if (result.data.status == "received" && result.data.incomingCoin >= $scope.exchangeRate) {
                         $scope.transactionIsSuccess = true;
                         $timeout(function () {
                         }, 3000).then(function () {
@@ -251,6 +286,15 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                     }
                 });
             }
+        }
+
+        function checkoutError (error) {
+            $scope.error = error;
+            $scope.checkoutError = true;
+            $timeout(function () {
+            }, 8000).then(function () {
+                $scope.cancel(error);
+            });
         }
 
         function timer (time) {

@@ -19,12 +19,12 @@
         <div ng-show="transactionIsSuccess" class="alert alert-success fade in">
             <strong>Success!</strong> Your transaction has been received.
         </div>
-        <div ng-show="shapeShiftError" class="alert alert-warning fade in">
-            <strong>Unable to connect to ShapeShift!</strong>Please try again.
+        <div ng-show="checkoutError" class="alert alert-warning fade in">
+            <strong>{{error}}</strong> Please try again.
         </div>
         <div class="modal-footer">
             <h3>Total: {{ total = getTotal() | currency }}</h3>
-            <button class="btn btn-warning" type="button" ng-click="payWithBitcoin(getTotal())">Pay With Bitcoin</button>
+            <button class="btn btn-warning" type="button" ng-click="payWithBitcoin(getTotal())">Pay With {{name}}</button>
             <div class="btn-group">
                 <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" ng-click="getAltcoins()">Pay With Altcoin<span class="caret"></span>
                 </button>
