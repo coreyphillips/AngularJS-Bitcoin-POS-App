@@ -74,7 +74,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             /*
              {"deposit":"LZYZ7Wu7gsx9UTs8mHa3DTzBKMT92sSNqG","depositType":"LTC","withdrawal":"1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy","withdrawalType":"BTC","public":null,"apiPubKey":"shapeshift"}
              */
-            getAltcoinDepositAddress: function(altcoin, address){
+            getAltcoinDepositAddress: function(altcoin, address, defaultCoin){
                 var data = ({
                     method: 'POST',
                     url: "https://www.shapeshift.io/shift/",
@@ -83,7 +83,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                     },
                     data:({
                         withdrawal:address,
-                        pair:altcoin+"_btc",
+                        pair:altcoin+"_"+defaultCoin,
                         returnAddress:"",
                         destTag:"",
                         rsAddress:"",
@@ -96,8 +96,8 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
              https://www.shapeshift.io/marketinfo/ltc_btc
              {"pair":"ltc_btc","rate":0.01215038,"minerFee":0.0001,"limit":353.97822857,"minimum":0.01628664}
              */
-            getAltcoinMarketInfo: function(altcoin){
-                return $http.get('https://www.shapeshift.io/marketinfo/'+altcoin+'_btc');
+            getAltcoinMarketInfo: function(altcoin, defaultCoin){
+                return $http.get('https://www.shapeshift.io/marketinfo/'+altcoin+'_'+defaultCoin);
             },
             /*
              https://www.shapeshift.io/txStat/1B8eC6MvjhKXt2Hk9yKDMsBAvosZ1cg6wt
@@ -214,7 +214,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             $scope.checkoutError = false;
             $scope.timer = 600;
             timer($scope.timer);
-            httpService.getAltcoinMarketInfo(altcoin.toLowerCase()).then(function (result) {
+            httpService.getAltcoinMarketInfo(altcoin.toLowerCase(), 'btc').then(function (result) {
                 $scope.altcoinRate = result.data.rate;
                 $scope.transactionIsActive = true;
 
@@ -253,7 +253,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
         function getAltcoinDepositAddress (altcoin){
             var i = 0;
             var limit = 10;
-            httpService.getAltcoinDepositAddress(altcoin, $modalInstance.address).then(function (result) {
+            httpService.getAltcoinDepositAddress(altcoin, $modalInstance.address, $modalInstance.symbol).then(function (result) {
                 if (result.data.error && $scope.transactionIsActive == true) {
                     if(i >= limit) {
                         checkoutError('Unable to fetch deposit address from ShapeShift.');
