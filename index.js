@@ -68,8 +68,8 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
              https://btc.blockr.io/api/v1/address/txs/194AJeZCav8TUFn5WBc8cELWwJQK6ViC8x
              {"status":"success","data":{"address":"194AJeZCav8TUFn5WBc8cELWwJQK6ViC8x","limit_txs":200,"nb_txs":2,"nb_txs_displayed":2,"txs":[{"tx":"bb60c1fe73387d5a3dbfb09f1e8a5c15cb2e8301f178c46b655cae4bfc2d6c3d","time_utc":"2015-09-21T01:46:14Z","confirmations":836,"amount":-0.0002144,"amount_multisig":0}},"code":200,"message":""}
              */
-            listBitcoinTransactions: function(address){
-                return $http.get('https://btc.blockr.io/api/v1/address/txs/'+ address)
+            listTransactions: function(address, symbol){
+                return $http.get('https://'+symbol+'.blockr.io/api/v1/address/txs/'+ address)
             },
             /*
              {"deposit":"LZYZ7Wu7gsx9UTs8mHa3DTzBKMT92sSNqG","depositType":"LTC","withdrawal":"1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy","withdrawalType":"BTC","public":null,"apiPubKey":"shapeshift"}
@@ -315,16 +315,17 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
         $scope.totalAmountReceived = 0;
         $scope.balance = 0;
         $scope.address = $scope.data.defaultCoin[0].address;
+        $scope.symbol = $scope.data.defaultCoin[0].symbol;
         $scope.defaultAddress = $scope.data.defaultCoin[0];
-        httpService.listBitcoinTransactions($scope.address).then(function (result) {
+        httpService.listTransactions($scope.address, $scope.symbol).then(function (result) {
             $scope.txs = result.data.data;
         });
 
-        $scope.searchAddress = function(address) {
+        $scope.searchAddress = function(address, symbol) {
             $scope.balance = 0;
             $scope.totalAmountReceived = 0;
             $scope.address = address;
-            httpService.listBitcoinTransactions(address).then(function (result) {
+            httpService.listTransactions(address, symbol).then(function (result) {
                 $scope.txs = result.data.data;
             })
         };

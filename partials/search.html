@@ -13,10 +13,10 @@
                         Quick Search <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="" ng-click="searchAddress(defaultAddress.address)">{{defaultAddress.name}}:
+                        <li><a href="" ng-click="searchAddress(defaultAddress.address, defaultAddress.symbol)">{{defaultAddress.name}}:
                             {{defaultAddress.address}}</a></li>
                         <li class="divider"></li>
-                        <li ng-repeat="address in data.addresses"><a href="" ng-click="searchAddress(address.address)">{{address.name}}:
+                        <li ng-repeat="address in data.addresses"><a href="" ng-click="searchAddress(address.address, address.symbol)">{{address.name}}:
                             {{address.address}}</a></li>
                     </ul>
                 </div>
