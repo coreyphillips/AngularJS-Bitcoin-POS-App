@@ -192,16 +192,21 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             return total;
         };
 
-        $scope.payWithBitcoin = function(total) {
+        $scope.payWithDefaultCoin = function(total) {
             $scope.address = $modalInstance.address;
             $scope.exchangeRate = Math.round10(total/$scope.rate, -8);
             $scope.transactionIsActive = true;
 
-            httpService.getAddressBalance($scope.address).then(function (result) {
-                var results = result.data;
-                $scope.originalAddressBalance = results *.00000001;
-            });
-            checkForBitcoinTransaction();
+            if($modalInstance.symbol.toLowerCase() != 'btc'){
+                $scope.transactionIsSuccess = false;
+                checkoutError("Unable to verify 0 confirmation transactions for "+$modalInstance.symbol.toUpperCase()+" with available API's. Please do so manually and click cancel when complete.", false);
+            } else {
+                httpService.getAddressBalance($scope.address).then(function (result) {
+                    var results = result.data;
+                    $scope.originalAddressBalance = results * .00000001;
+                });
+                checkForBitcoinTransaction();
+            }
         };
 
         $scope.getAltcoins = function() {
@@ -223,7 +228,7 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
 
                 //Check that the current purchase is below ShapeShift's limit and above ShapeShift's minimum
                 if($scope.exchangeRate > result.data.limit || $scope.exchangeRate < result.data.minimum){
-                    checkoutError("According to ShapeShift's limits you must spend more than "+result.data.minimum+" "+ altcoin +" and less than "+ result.data.limit+" "+ altcoin);
+                    checkoutError("According to ShapeShift's limits you must spend more than "+result.data.minimum+" "+ altcoin +" and less than "+ result.data.limit+" "+ altcoin, true);
                 } else {
                     getAltcoinDepositAddress(altcoin);
                 }
@@ -288,13 +293,15 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             }
         }
 
-        function checkoutError (error) {
+        function checkoutError (error, cancel) {
             $scope.error = error;
             $scope.checkoutError = true;
-            $timeout(function () {
-            }, 8000).then(function () {
-                $scope.cancel(error);
-            });
+            if (cancel) {
+                $timeout(function () {
+                }, 8000).then(function () {
+                    $scope.cancel(error);
+                });
+            }
         }
 
         function timer (time) {
