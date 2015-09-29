@@ -32,8 +32,7 @@ Altcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
 ## Future Improvements/Known Limitations
 - Create support for more altcoins on the #/search page.
 - Create support for altcoins available on ShapeShift.io that require more than an address for a successful transaction (i.e. Monero).
-- The #/search page currently uses "https://btc.blockr.io/api/v1/address/txs/'+ address" to get address transactions. Unfortunately, this api does not appear to list 0 confirmation transactions. Any suggestions on an api that also lists 0 confirmation transactions would be greatly appreciated.
-- $rootscope was not used throughout the app due to several suggestions that it be avoided. However, accessing parent scopes eventually become an issue. There are instances where $modalInstance is used to work around this, but it is less than ideal. This issue also seems to prevent the $scope.items array from being cleared after each transaction requiring the user to click "Remove All Items" instead. Any suggestions on how to best access parent scope would be greatly appreciated.
+- $rootscope was not used throughout the app due to several suggestions that it be avoided. However, accessing parent scopes eventually became an issue. There are instances where $modalInstance is used to work around this, but it is less than ideal. This issue also seems to prevent the $scope.items array from being cleared after each transaction requiring the user to click "Remove All Items" instead. Any suggestions on how to best access parent scope would be greatly appreciated.
 
 ## Video Walk-through
 - https://youtu.be/DoZfZQyTCHs

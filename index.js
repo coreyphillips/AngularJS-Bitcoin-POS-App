@@ -72,6 +72,13 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
                 return $http.get('https://'+symbol+'.blockr.io/api/v1/address/txs/'+ address)
             },
             /*
+             https://btc.blockr.io/api/v1/address/unconfirmed/1KW8DKTgJzvgc4MaU5HUmHqT65mU8PmzqJ
+             {"status":"success","data":{"address":"1KW8DKTgJzvgc4MaU5HUmHqT65mU8PmzqJ","unconfirmed":[{"tx":"2f8cb79487deed4eae47c8fe023682aa6cb06c55c9109b552336d3ea3fe36125","time_utc":"2015-09-29T12:40:03Z","amount":0.00021046,"n":1}]},"code":200,"message":""}
+             */
+            listUnconfirmedTransactions: function(address, symbol){
+                return $http.get('https://'+symbol+'.blockr.io/api/v1/address/unconfirmed/'+ address)
+            },
+            /*
              {"deposit":"LZYZ7Wu7gsx9UTs8mHa3DTzBKMT92sSNqG","depositType":"LTC","withdrawal":"1JSRWccK7Lef2xZmd8B41bB481iNV9pPoy","withdrawalType":"BTC","public":null,"apiPubKey":"shapeshift"}
              */
             getAltcoinDepositAddress: function(altcoin, address, defaultCoin){
@@ -327,6 +334,9 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
         httpService.listTransactions($scope.address, $scope.symbol).then(function (result) {
             $scope.txs = result.data.data;
         });
+        httpService.listUnconfirmedTransactions($scope.address, $scope.symbol).then(function (result) {
+            $scope.unconfirmedTxs = result.data.data;
+        });
 
         $scope.searchAddress = function(address, symbol) {
             $scope.balance = 0;
@@ -334,7 +344,10 @@ angular.module('bitcoinPosApp', ['ui.router', 'ui.bootstrap'])
             $scope.address = address;
             httpService.listTransactions(address, symbol).then(function (result) {
                 $scope.txs = result.data.data;
-            })
+            });
+            httpService.listUnconfirmedTransactions(address, symbol).then(function (result) {
+                $scope.unconfirmedTxs = result.data.data;
+            });
         };
 
         $scope.sumAmount = function(amount) {

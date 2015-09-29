@@ -21,7 +21,7 @@
                     </ul>
                 </div>
             </form>
-            <p>Total Number of Transactions: {{txs.nb_txs}}</p>
+            <p>Total Number of Confirmed Transactions: {{txs.nb_txs}}</p>
 
             <p>Balance: {{balance}}</p>
 
@@ -44,7 +44,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="{{tx.confirmations>0?+'success':'warning'}}" data-ng-repeat="tx in txs.txs">
+                <tr ng-show="unconfirmedTxs.status == success" class="danger" data-ng-repeat="unconfirmedTx in unconfirmedTxs.unconfirmed">
+                    <td>{{unconfirmedTx.tx}}</td>
+                    <td>{{unconfirmedTx.time_utc}}</td>
+                    <td>0</td>
+                    <td ng-init="sumAmount(unconfirmedTx.amount)">{{unconfirmedTx.amount}}</td>
+                </tr>
+                <tr class="{{tx.confirmations>0?+'success':'danger'}}" data-ng-repeat="tx in txs.txs">
                     <td>{{tx.tx}}</td>
                     <td>{{tx.time_utc}}</td>
                     <td>{{tx.confirmations}}</td>
