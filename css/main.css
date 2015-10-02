@@ -168,7 +168,7 @@ Metro CSS Styles
 
 .tile h2 {
     font-size: 1.75em;
-    margin-top: -20px;
+    margin-top: -10px;
     margin-left: 0
 }
 
@@ -394,8 +394,8 @@ a.fa-links:hover, a.fa-links:focus {
 }
 
 .tile.tile-medium-list {
-    height: 150px;
-    width: 15%
+    min-height: 150px;
+    min-width: 20%;
 }
 
 .tile.tile-medium {
@@ -444,7 +444,6 @@ td {
 .tile-button.button-small {
     min-width: 40%;
     max-width: 30%;
-    max-height: 30px;
 }
 
 .light-red {

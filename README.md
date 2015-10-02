@@ -38,4 +38,4 @@ Altcoin->Coinbase Instant Exchange Bitcoin Address->USD Payments:
 - https://youtu.be/DoZfZQyTCHs
 
 ## Demo Site
-- https://cryptomerchantapp.xyz
+- cryptomerchantapp.xyz
