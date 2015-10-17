@@ -28,7 +28,7 @@
             <div class="btn-group">
                 <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" ng-click="getAltcoins()">Pay With Altcoin<span class="caret"></span>
                 </button>
-                <ul id="altcoin-list" class="dropdown-menu" role="menu">
+                <ul id="altcoin-list" class="dropdown-menu dropdown-menu-middle" role="menu">
                     <li ng-show="coin.status == 'available'" data-ng-repeat="coin in shapeShiftAltcoins">
                         <a href="#" ng-click="payWithAltcoin(total, coin.symbol)"><img id="altcoin-image" src="{{coin.image}}">{{coin.name}}</a>
                     </li>

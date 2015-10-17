@@ -106,6 +106,10 @@ body {
 /*
 List and Checkout Items
 */
+.dropdown-menu-middle {
+    right: -80%;
+    left: auto;
+}
 #altcoin-list {
     -moz-column-count: 4;
     -moz-column-gap: 20px;
